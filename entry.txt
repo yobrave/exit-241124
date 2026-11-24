@@ -1,0 +1,1 @@
+I quit my job writing error messages. This is my last one: Unexpected exit on line 1 — please restart your employee.
