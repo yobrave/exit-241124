@@ -1,28 +1,18 @@
-"""Builds the one-line resignation letter for The One-Line Exit (140 chars max)."""
-import json
+"""Final error message from an employee quitting in one line."""
 import os
-
 from pathlib import Path
 
-PARTS = (
-    "I quit my job writing error messages. ",
-    "This is my last one: Unexpected exit on line 1",
-    " — please restart your employee.",
-)
+LAST = ("I quit my job writing error messages. This is my last one: "
+        "Unexpected exit on line 1 — please restart your employee.")
+CODE = "exit2"
+WAIT = "one"
+NOTE = "door closed"
 
-
-def build_line():
-    return "".join(PARTS).strip()
-
-
-def deliver():
-    base = os.environ.get("MAKEFUN_OUTPUT_DIR") or "output"
-    folder = Path(base)
-    folder.mkdir(parents=True, exist_ok=True)
-    target = folder / "entry.txt"
-    line = build_line()
-    target.write_text(line + "\n", encoding="utf-8")
-    return {"chars": len(line), "path": str(target), "line": line}
-
-
-print(json.dumps(deliver(), ensure_ascii=False))
+base = Path(os.environ.get("MAKEFUN_OUTPUT_DIR") or "output")
+base.mkdir(parents=True, exist_ok=True)
+out = base / "entry.txt"
+out.write_bytes((LAST + "\n").encode("utf-8"))
+back = out.read_text(encoding="utf-8").strip()
+assert back == LAST, "exit line lost in the loop"
+print(CODE, "wait", WAIT, "len", len(back))
+print(NOTE, "badge on the desk")
